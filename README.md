@@ -1,4 +1,4 @@
 pyhub
 =====
 
-a python git plugin for github thingy
+a python git plugin for github thingy.
