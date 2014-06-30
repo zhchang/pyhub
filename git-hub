@@ -7,7 +7,7 @@ def showHelp(modules):
     print 'available modules:'
     for subdir, dirs, files in os.walk(modules):
         for dir in dirs:
-            print file[0:-3]
+            print dir
 
 def main():
     # use this if you want to include modules from a subforder
