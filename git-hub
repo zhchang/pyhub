@@ -1,0 +1,30 @@
+#!/usr/bin/python
+import os, sys, inspect
+
+actions = {}
+
+def showHelp(modules):
+    print 'available modules:'
+    for subdir, dirs, files in os.walk(modules):
+        for dir in dirs:
+            print file[0:-3]
+
+def main():
+    # use this if you want to include modules from a subforder
+    modules = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],"modules")))
+    if modules not in sys.path:
+        sys.path.insert(0, modules)
+
+    if len(sys.argv) > 1:
+        arg1 = sys.argv[1]
+        try:
+            module = __import__(arg1) 
+            try:
+                module.process(sys.argv[2:])
+            except:
+                print "This is embarassing, module %s failed to run."%(module.__str__())
+        except:
+            showHelp(modules)
+            
+        
+main()
