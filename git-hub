@@ -19,14 +19,16 @@ def showHelp(modules,wrongcmd=''):
                 pass
 
 def loadCfgs(path):
+    global shortcuts
     shortcut = open(os.path.join(path,'shortcut.cfg'),'r')
     for line in shortcut:
         if line.find('#') != 0:
-            parts = line.split("=")
+            parts = line.rstrip().split("=")
             if len(parts) == 2:
                 shortcuts[parts[0]] = parts[1]
 
 def getRealCmd(cmd):
+    global shortcuts
     if cmd in shortcuts:
         return shortcuts[cmd]
     else:
