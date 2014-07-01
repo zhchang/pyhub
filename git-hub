@@ -37,7 +37,7 @@ def getRealCmd(cmd):
 def doDefaultActions(cmd, modules):
     processed = False
     if cmd == "version":
-        print "0.0.1";
+        print "0.0.1"
         processed = True
     elif cmd == "help":
         showHelp(modules)
@@ -47,6 +47,8 @@ def doDefaultActions(cmd, modules):
 
 def main():
     pwd = os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0])
+    if pwd not in sys.path:
+        sys.path.insert(0, pwd)
     # use this if you want to include modules from a subforder
     modules = os.path.abspath(os.path.join(os.path.realpath(pwd),"modules"))
     if modules not in sys.path:
@@ -62,8 +64,9 @@ def main():
             module = __import__(cmd) 
             try:
                 module.process(sys.argv[2:])
-            except:
+            except  Exception as e:
                 print "This is embarassing, module %s failed to run."%(module.__str__())
+                print e
         except:
             showHelp(modules,cmd)
             
