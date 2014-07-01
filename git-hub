@@ -1,30 +1,69 @@
 #!/usr/bin/python
 import os, sys, inspect
 
-actions = {}
+shortcuts = {}
 
-def showHelp(modules):
+def showHelp(modules,wrongcmd=''):
+    if len(wrongcmd) != 0:
+        print "cmd %s not found"%(wrongcmd)
     print 'available modules:'
     for subdir, dirs, files in os.walk(modules):
         for dir in dirs:
-            print dir
+            try:
+                module = __import__(dir) 
+                try:
+                    print "[%s] - %s"%(dir,module.help())
+                except:
+                    pass
+            except:
+                pass
+
+def loadCfgs(path):
+    shortcut = open(os.path.join(path,'shortcut.cfg'),'r')
+    for line in shortcut:
+        if line.find('#') != 0:
+            parts = line.split("=")
+            if len(parts) == 2:
+                shortcuts[parts[0]] = parts[1]
+
+def getRealCmd(cmd):
+    if cmd in shortcuts:
+        return shortcuts[cmd]
+    else:
+        return cmd
+
+def doDefaultActions(cmd, modules):
+    processed = False
+    if cmd == "version":
+        print "0.0.1";
+        processed = True
+    elif cmd == "help":
+        showHelp(modules)
+        processed = True
+    return processed
+
 
 def main():
+    pwd = os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0])
     # use this if you want to include modules from a subforder
-    modules = os.path.realpath(os.path.abspath(os.path.join(os.path.split(inspect.getfile( inspect.currentframe() ))[0],"modules")))
+    modules = os.path.abspath(os.path.join(os.path.realpath(pwd),"modules"))
     if modules not in sys.path:
         sys.path.insert(0, modules)
+    loadCfgs(pwd)
 
     if len(sys.argv) > 1:
         arg1 = sys.argv[1]
+        cmd = getRealCmd(arg1)
+        if doDefaultActions(cmd,modules):
+            return
         try:
-            module = __import__(arg1) 
+            module = __import__(cmd) 
             try:
                 module.process(sys.argv[2:])
             except:
                 print "This is embarassing, module %s failed to run."%(module.__str__())
         except:
-            showHelp(modules)
+            showHelp(modules,cmd)
             
         
 main()
