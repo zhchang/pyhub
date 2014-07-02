@@ -8,6 +8,7 @@ def help(*args, **argv):
     print desc()
 
 def list(*args, **argv):
+    print args
     print "Here list all pull request"
     cwd = os.getcwd()
     github = common.getGithubUrl(cwd)
