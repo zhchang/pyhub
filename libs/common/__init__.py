@@ -1,15 +1,12 @@
 from git import *
 import git
 import logging
+from objects import GitHub
 def getGithubUrl(path):
     try:
         repo = Repo(path)
         origin = repo.remotes.origin
-        url = origin.url
-        if url.find("github.com") != -1:
-            return url
-        else:
-            return None
+        return GitHub.fromUrl(origin.url)
     except:
         logging.exception("failed to get github url")
         pass

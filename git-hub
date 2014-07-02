@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import os, sys, inspect
+import os, sys, inspect,logging
 
 shortcuts = {}
 
@@ -65,9 +65,9 @@ def main():
             module = __import__(cmd) 
             try:
                 module.process(sys.argv[2:])
-            except  Exception as e:
-                print "This is embarassing, module %s failed to run."%(module.__str__())
-                print e
+            except:
+                logging.exception("This is embarassing, module %s failed to run."%(module.__str__()))
+
         except:
             showHelp(modules,cmd)
             

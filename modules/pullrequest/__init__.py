@@ -3,6 +3,7 @@ def help():
 def process(argv):
     if len(argv) >= 1:
         if argv[0] == "list":
+            pass
             import list
             list.list()
     else:

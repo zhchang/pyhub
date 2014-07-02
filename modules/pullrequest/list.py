@@ -1,9 +1,9 @@
 import os
-import pyhub.libs.common as pcommon
+import pyhub.libs.common as common
 
 def list():
     cwd = os.getcwd()
-    url = pcommon.getGithubUrl(cwd)
-    if url is not None:
-        print "grabbing information from %s"%(url)
+    github = common.getGithubUrl(cwd)
+    if github is not None:
+        print "user: %s, repo:%s"%(github.user,github.repo)
 
