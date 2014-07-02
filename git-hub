@@ -42,6 +42,7 @@ def main():
         func = getattr(module, method)
         func(*sys.argv[3:]) # or func()
     except:
-        logging.exception("This is embarassing, module %s failed to run."%(module.__str__()))
+        print "This module is not implemented yet."
+        __import__("help").help()
 
 main()
