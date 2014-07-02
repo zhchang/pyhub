@@ -3,21 +3,6 @@ import os, sys, inspect,logging
 
 shortcuts = {}
 
-def showHelp(modules,wrongcmd=''):
-    if len(wrongcmd) != 0:
-        print "cmd %s not found"%(wrongcmd)
-    print 'available modules:'
-    for subdir, dirs, files in os.walk(modules):
-        for dir in dirs:
-            try:
-                module = __import__(dir) 
-                try:
-                    print "[%s] - %s"%(dir,module.help())
-                except:
-                    pass
-            except:
-                pass
-
 def loadCfgs(path):
     global shortcuts
     shortcut = open(os.path.join(path,'shortcut.cfg'),'r')
@@ -56,20 +41,18 @@ def main():
         sys.path.insert(0, modules)
     loadCfgs(pwd)
 
-    if len(sys.argv) > 1:
-        arg1 = sys.argv[1]
-        cmd = getRealCmd(arg1)
-        if doDefaultActions(cmd,modules):
-            return
-        try:
-            module = __import__(cmd) 
-            try:
-                module.process(sys.argv[2:])
-            except:
-                logging.exception("This is embarassing, module %s failed to run."%(module.__str__()))
+    cmd = "help" if len(sys.argv) < 1 else getRealCmd(sys.argv[1])
 
-        except:
-            showHelp(modules,cmd)
-            
-        
+    try:
+        method = sys.argv[2]
+    except:
+        method = "help"
+
+    try:
+        module = __import__(cmd)
+        func = getattr(module, method)
+        func(*sys.argv[3:]) # or func()
+    except:
+        logging.exception("This is embarassing, module %s failed to run."%(module.__str__()))
+
 main()
