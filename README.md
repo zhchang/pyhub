@@ -11,3 +11,10 @@ to use pyhub plugin:
 You should already be able to issue command like:
 
 git hub pullrequest
+
+Current Support Commandlist:
+============================
+
+1. help
+2. config
+3. version
