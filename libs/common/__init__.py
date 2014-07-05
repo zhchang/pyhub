@@ -12,4 +12,5 @@ def getGithubUrl(path):
         pass
     return None
 
-
+def getConfig:
+    return None

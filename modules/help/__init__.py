@@ -17,3 +17,7 @@ def help(*args, **argv):
                     pass
             except:
                 pass
+def process(*args):
+    if len(args) > 0:
+        print 'unsupported command %s'%(args[0])
+

@@ -41,8 +41,6 @@ def main():
         sys.path.insert(0, modules)
     loadCfgs(pwd)
 
-    print len(sys.argv)
-
     cmd = "help" if len(sys.argv) < 2 else getRealCmd(sys.argv[1])
 
     try:
@@ -52,9 +50,12 @@ def main():
 
     try:
         module = __import__(cmd)
-        func = getattr(module, method)
-        func(*sys.argv[3:]) # or func()
+        try:
+            func = getattr(module, method)
+            func(*sys.argv[3:]) # or func()
+        except:
+            module.process(*sys.argv[2:])
     except:
-        logging.exception("This is embarassing, module %s failed to run."%(module.__str__()))
+        logging.exception("This is embarassing, module %s failed to run."%(cmd))
 
 main()
