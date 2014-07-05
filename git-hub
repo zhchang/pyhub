@@ -19,17 +19,6 @@ def getRealCmd(cmd):
     else:
         return cmd
 
-def doDefaultActions(cmd, modules):
-    processed = False
-    if cmd == "version":
-        print "0.0.1"
-        processed = True
-    elif cmd == "help":
-        showHelp(modules)
-        processed = True
-    return processed
-
-
 def main():
     pwd = os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0])
     ppd = os.path.dirname(pwd)
@@ -41,7 +30,7 @@ def main():
         sys.path.insert(0, modules)
     loadCfgs(pwd)
 
-    cmd = "help" if len(sys.argv) < 2 else getRealCmd(sys.argv[1])
+    cmd = "help" if len(sys.argv) <= 1 else getRealCmd(sys.argv[1])
 
     try:
         method = sys.argv[2]
@@ -56,6 +45,7 @@ def main():
         except:
             module.process(*sys.argv[2:])
     except:
-        logging.exception("This is embarassing, module %s failed to run."%(cmd))
+        print "This module is not implemented yet."
+        __import__("help").help()
 
 main()
