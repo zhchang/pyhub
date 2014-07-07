@@ -22,9 +22,13 @@ def list(*args, **argv):
         print 'Gimme a git-hub repo to start with'
         return;
     conf = config.get_config()
-    if conf is not None:
+    if conf is not None and (len(conf.username) > 0 or len(conf.token) > 0):
         prurl = github.pr_url()
         r = requests.get(prurl,auth=(conf.username,conf.password),params={'state':state})
-        for pr in r.json():
-            print pr['url']
-
+        if r.status_code == 200:
+            for pr in r.json():
+                print pr['url']
+        elif r.status_code == 401:
+            print 'authentication error. try git hub config'
+    else:
+        print 'please config authentication first'
