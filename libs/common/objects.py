@@ -1,3 +1,4 @@
+import logging
 class GitHub:
     user = ''
     repo = ''
@@ -5,14 +6,16 @@ class GitHub:
         self.user = user
         self.repo = repo
 
-    def toGitUrl(self):
+    def git_url(self):
         return "git@github.com:%s/%s.git"%(self.user,self.repo)
 
-    def toHttpUrl(self):
+    def http_url(self):
         return "https://github.com/%s/%s.git"%(self.user,self.repo)
+    def pr_url(self):
+        return "https://api.github.com/repos/%s/%s/pulls"%(self.user,self.repo)
 
     @staticmethod
-    def fromUrl(url):
+    def from_url(url):
         user = None
         repo =None
         if url.find("github.com") and url[-4:] == ".git":
@@ -21,13 +24,13 @@ class GitHub:
                 if url.find("git@github.com:") == 0:
                     parts = url.split(":")
                     parts = parts[1].split("/")
-                    print parts
-                    (user,repo)=(pars[0],parts[1])
+                    (user,repo)=(parts[0],parts[1])
                 elif url.find("https://github.com") == 0:
                     url = url[8:]
                     parts = url.split("/")
                     (user,repo)=(parts[1],parts[2])
             except:
+                logging.exception('git hub from url')
                 pass
             if user is not None and repo is not None:
                 return GitHub(user,repo)

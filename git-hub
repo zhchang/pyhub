@@ -1,8 +1,7 @@
 #!/usr/bin/python
 import os, sys, inspect,logging
 
-shortcuts = {}
-
+shortcuts = {} 
 def loadCfgs(path):
     global shortcuts
     shortcut = open(os.path.join(path,'shortcut.cfg'),'r')
@@ -40,11 +39,16 @@ def main():
     try:
         module = __import__(cmd)
         try:
-            func = getattr(module, method)
+            try:
+                func = getattr(module, method)
+            except:
+                logging.exception("fuck2")
+                module.process(*sys.argv[2:])
             func(*sys.argv[3:]) # or func()
         except:
-            module.process(*sys.argv[2:])
+            logging.exception("module error")
     except:
+        logging.exception("unknown")
         print "This module is not implemented yet."
         __import__("help").help()
 

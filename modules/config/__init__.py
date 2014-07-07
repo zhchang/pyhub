@@ -1,4 +1,5 @@
 import os,logging
+from objects import Config
 
 def desc(*args, **argv):
     return "do configs"
@@ -11,6 +12,11 @@ def show():
     print "saved configurations:"
     for key,value in map.iteritems():
         print "%s : %s"%(key,value)
+
+def get_config():
+    map = _loadcfg()
+    config = Config(map)
+    return config
 
 def process(*args):
     try:
