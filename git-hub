@@ -44,6 +44,7 @@ def main():
             except:
                 logging.exception("fuck2")
                 module.process(*sys.argv[2:])
+                return
             func(*sys.argv[3:]) # or func()
         except:
             logging.exception("module error")
