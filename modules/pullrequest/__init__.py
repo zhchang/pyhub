@@ -10,6 +10,12 @@ def help(*args, **argv):
     print desc()
 
 def list(*args, **argv):
+    state='open'
+    if len(args) > 0:
+        state = args[0]
+    if state not in ['all','open','closed']:
+        print 'invalid arg[%s] for list'%(state)
+
     cwd = os.getcwd()
     github = common.getGithubUrl(cwd)
     if github is None:
@@ -18,7 +24,7 @@ def list(*args, **argv):
     conf = config.get_config()
     if conf is not None:
         prurl = github.pr_url()
-        r = requests.get(prurl,auth=(conf.username,conf.password),params={'state':'all'})
+        r = requests.get(prurl,auth=(conf.username,conf.password),params={'state':state})
         for pr in r.json():
             print pr['url']
 
