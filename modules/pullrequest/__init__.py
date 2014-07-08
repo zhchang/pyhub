@@ -9,6 +9,12 @@ def desc(*args, **argv):
 def help(*args, **argv):
     print desc()
 
+def close(*args, **argv):
+    pass
+
+def create(*args,**argv):
+    pass
+
 def list(*args, **argv):
     state='open'
     if len(args) > 0:
@@ -17,7 +23,7 @@ def list(*args, **argv):
         print 'invalid arg[%s] for list'%(state)
 
     cwd = os.getcwd()
-    github = common.getGithubUrl(cwd)
+    github = common.git_hub(cwd)
     if github is None:
         print 'Gimme a git-hub repo to start with'
         return;

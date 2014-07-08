@@ -2,7 +2,7 @@ from git import *
 import git
 import logging
 from objects import GitHub
-def getGithubUrl(path):
+def git_hub(path):
     try:
         repo = Repo(path)
         origin = repo.remotes.origin
