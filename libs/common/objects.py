@@ -11,8 +11,10 @@ class GitHub:
 
     def http_url(self):
         return "https://github.com/%s/%s.git"%(self.user,self.repo)
-    def pr_url(self):
+    def pr_list_url(self):
         return "https://api.github.com/repos/%s/%s/pulls"%(self.user,self.repo)
+    def pr_update_url(self, index):
+        return "https://api.github.com/repos/%s/%s/pulls/%s"%(self.user,self.repo,index)
 
     @staticmethod
     def from_url(url):

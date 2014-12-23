@@ -9,8 +9,16 @@ def desc(*args, **argv):
 def help(*args, **argv):
     print desc()
 
-def close(*args, **argv):
-    pass
+def process(*args, **argv):
+    cwd = os.getcwd()
+    github = common.git_hub(cwd)
+    if github is None:
+        print 'Gimme a git-hub repo to start with'
+        return;
+    cmd = args[0]
+    if cmd == 'open' or cmd == 'close' or cmd =='closed':
+        
+
 
 def create(*args,**argv):
     pass
@@ -29,7 +37,7 @@ def list(*args, **argv):
         return;
     conf = config.get_config()
     if conf is not None and (len(conf.username) > 0 or len(conf.token) > 0):
-        prurl = github.pr_url()
+        prurl = github.pr_list_url()
         r = requests.get(prurl,auth=(conf.username,conf.password),params={'state':state})
         if r.status_code == 200:
             for pr in r.json():

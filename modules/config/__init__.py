@@ -34,6 +34,21 @@ def process(*args):
 def _loadcfg():
     map = {}
     try:
+        file = open ('%s/.gitconfig'%(os.path.expanduser('~')),'r')
+        for line in file:
+            line = line.strip()
+            if line.find('=') != -1:
+                parts = line.rstrip().split("=")
+                if len(parts) == 2:
+                    key = parts[0].strip()
+                    value = parts[1].strip()
+                    if key in ['editor']:
+                        map[key] = value
+    except:
+        pass
+
+                
+    try:
         file = open ('%s/.pyhub'%(os.path.expanduser('~')),'r')
         for line in file:
             if line.find('#') != 0:
@@ -49,7 +64,8 @@ def _writecfg(map):
     try:
         file = open ('%s/.pyhub'%(os.path.expanduser('~')),'w+')
         for key,value in map.iteritems():
-            file.write('%s=%s\n'%(key,value))
+            if key in ['pass','user','token']:
+                file.write('%s=%s\n'%(key,value))
         file.close()
     except:
         pass
